@@ -1,0 +1,51 @@
+@using System.Globalization
+@model BuscarApiVista
+@{
+    ViewData["Titulo"] = "Buscar en la API";
+    ViewData["Icono"] = "cloud-arrow-down";
+    ViewData["Activa"] = "buscar";
+    ViewData["Ancho"] = "buscar";
+}
+
+<ui-formulario accion="/paises/buscar-api" metodo="get" progreso="Consultando…">
+    <div class="fila-buscar">
+        <ui-campo id="nombre" etiqueta="Nombre común (en inglés)" valor="@Model.Nombre" requerido="true"
+                  placeholder="Por ejemplo: Ecuador, Uruguay, Portugal" autocomplete="off" />
+        <ui-boton icono="magnifying-glass">Buscar</ui-boton>
+    </div>
+</ui-formulario>
+
+@if (Model.Resultados is not null)
+{
+    @if (Model.Resultados.Count == 0)
+    {
+        <div class="estado" data-estado><ui-mensaje tipo="info" mensaje="No se encontraron países con ese nombre" /></div>
+    }
+    else
+    {
+        @foreach (var p in Model.Resultados)
+        {
+            <div class="ficha capa">
+                <dl>
+                    <dt>Nombre</dt><dd>@p.Nombre</dd>
+                    <dt>Capital</dt><dd><ui-dato valor="@p.Capital" /></dd>
+                    <dt>Región</dt><dd>@Pais.EtiquetaRegion(p.Region)</dd>
+                    <dt>Subregión</dt><dd><ui-dato valor="@p.Subregion" /></dd>
+                    <dt>Población</dt><dd>@p.Poblacion.ToString("N0")</dd>
+                    <dt>Área</dt><dd><ui-dato valor="@(p.Area is null ? null : p.Area.Value.ToString("#,##0.##") + " km²")" /></dd>
+                    <dt>Moneda</dt><dd><ui-dato valor="@p.Moneda" /></dd>
+                </dl>
+                <ui-formulario accion="/paises/guardar" progreso="Guardando…" clase="centrado">
+                    <input type="hidden" name="nombre" value="@p.Nombre">
+                    <input type="hidden" name="capital" value="@p.Capital">
+                    <input type="hidden" name="region" value="@p.Region">
+                    <input type="hidden" name="subregion" value="@p.Subregion">
+                    <input type="hidden" name="poblacion" value="@p.Poblacion.ToString(CultureInfo.InvariantCulture)">
+                    <input type="hidden" name="area" value="@p.Area?.ToString("0.##", CultureInfo.InvariantCulture)">
+                    <input type="hidden" name="moneda" value="@p.Moneda">
+                    <ui-boton icono="floppy-disk">Guardar en la base de datos</ui-boton>
+                </ui-formulario>
+            </div>
+        }
+    }
+}

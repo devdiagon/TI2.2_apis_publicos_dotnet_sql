@@ -1,0 +1,33 @@
+@model FormularioPais
+@{
+    ViewData["Titulo"] = Model.Editando ? "Editar país" : "Nuevo país";
+    ViewData["Icono"] = "pencil-simple-line";
+    ViewData["Activa"] = "paises";
+    ViewData["Ancho"] = "form";
+}
+
+<ui-formulario accion="/paises/guardar" progreso="Guardando…">
+    @if (Model.Editando)
+    {
+        <input type="hidden" name="id" value="@Model.Id">
+    }
+    <ui-campo id="nombre" etiqueta="Nombre" valor="@Model.Nombre" maxlength="100" />
+    <ui-campo id="capital" etiqueta="Capital" valor="@Model.Capital" maxlength="100" />
+    <ui-selector id="region" etiqueta="Región" opciones="Pais.Regiones" seleccionada="@Model.Region" vacio="Seleccione…" conservar="true" />
+    <ui-campo id="subregion" etiqueta="Subregión" valor="@Model.Subregion" maxlength="100" />
+    <ui-campo id="poblacion" etiqueta="Población" valor="@Model.Poblacion" inputmode="numeric" solo-numeros="true" placeholder="Solo dígitos" />
+    <ui-campo id="area" etiqueta="Área (km²)" valor="@Model.Area" inputmode="decimal" solo-decimal="true" placeholder="Por ejemplo: 283561" />
+    <ui-campo id="moneda" etiqueta="Moneda" valor="@Model.Moneda" maxlength="100" />
+    <div class="fila-botones">
+        <ui-boton icono="floppy-disk">Guardar</ui-boton>
+        <ui-boton tipo="secundario" href="/paises" icono="x">Cancelar</ui-boton>
+    </div>
+</ui-formulario>
+
+@if (Model.Editando)
+{
+    <ui-formulario accion="/paises/eliminar" confirmar="¿Eliminar este país?" progreso="Eliminando…">
+        <input type="hidden" name="id" value="@Model.Id">
+        <ui-boton tipo="secundario" icono="trash" completo="true" salida="true">Eliminar</ui-boton>
+    </ui-formulario>
+}

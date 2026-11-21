@@ -1,0 +1,10 @@
+@{
+    ViewData["Titulo"] = "Error";
+    ViewData["Icono"] = "warning-circle";
+    ViewData["Ancho"] = "form";
+}
+
+<ui-mensaje tipo="error" mensaje="@(ViewData["MensajeError"] as string)" />
+<div class="fila-botones">
+    <ui-boton href="/paises" icono="house">Volver al inicio</ui-boton>
+</div>

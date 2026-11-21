@@ -1,0 +1,71 @@
+@model ListaPaisesVista
+@{
+    ViewData["Titulo"] = "Países";
+    ViewData["Icono"] = "list-magnifying-glass";
+    ViewData["Activa"] = "paises";
+    ViewData["Ancho"] = "paises";
+    var filtrado = !string.IsNullOrEmpty(Model.Region) || !string.IsNullOrEmpty(Model.Texto);
+}
+
+<div class="pozo">
+    <ui-formulario accion="/paises" metodo="get" filtro="true" clase="filtros">
+        <ui-selector id="region" etiqueta="Región" opciones="Pais.Regiones" seleccionada="@Model.Region" vacio="Todas" />
+        <ui-campo id="texto" etiqueta="Nombre o capital" tipo="search" valor="@Model.Texto" placeholder="Escriba para filtrar…" autocomplete="off" />
+        <noscript><ui-boton icono="magnifying-glass">Buscar</ui-boton></noscript>
+    </ui-formulario>
+</div>
+
+<div class="barra">
+    <span class="contador" aria-live="polite"><i class="ph ph-globe-hemisphere-west"></i>@Model.Paises.Count.ToString("N0") países</span>
+    <span class="acciones">
+        @if (filtrado)
+        {
+            <a class="enlace" href="@Url.Content("~/paises")">Limpiar filtros</a>
+        }
+        <ui-formulario accion="/paises/importar" progreso="Importando países…" clase="form-linea">
+            <ui-boton tipo="secundario" icono="cloud-arrow-down">Importar países</ui-boton>
+        </ui-formulario>
+        <ui-boton href="/paises/nuevo" icono="plus-circle">Nuevo país</ui-boton>
+    </span>
+</div>
+
+<div class="tabla-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th><th>Capital</th><th>Región</th><th>Subregión</th>
+                <th class="num">Población</th><th class="num">Área (km²)</th><th>Moneda</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Paises.Count == 0)
+            {
+                <tr><td class="vacio" colspan="7">
+                    @if (filtrado)
+                    {
+                        <text>Ningún país coincide con la búsqueda.</text>
+                    }
+                    else
+                    {
+                        <text>Aún no hay países; importe primero con «Importar países».</text>
+                    }
+                </td></tr>
+            }
+            else
+            {
+                @foreach (var p in Model.Paises)
+                {
+                    <tr>
+                        <td><a href="@Url.Content("~/paises/" + p.Id)">@p.Nombre</a></td>
+                        <td><ui-dato valor="@p.Capital" /></td>
+                        <td>@Pais.EtiquetaRegion(p.Region)</td>
+                        <td><ui-dato valor="@p.Subregion" /></td>
+                        <td class="num">@p.Poblacion.ToString("N0")</td>
+                        <td class="num"><ui-dato valor="@p.Area?.ToString("#,##0.##")" /></td>
+                        <td><ui-dato valor="@p.Moneda" /></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
