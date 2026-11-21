@@ -49,6 +49,8 @@ Thumbs.db
 $RECYCLE.BIN/
 
 .env
+appsettings.json
+appsettings.Development.json
 *.md
 /target/
 context/
