@@ -1,0 +1,1 @@
+Por medio del presente, se informa que este proyecto no necesita de un cliente web dedicado porque todo se concentra en el proyecto del servidor.

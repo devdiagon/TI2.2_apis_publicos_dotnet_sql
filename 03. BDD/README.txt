@@ -1,0 +1,1 @@
+Por medio del presente, se informa que este proyecto no necesita script DML porque los datos se insertan directamente de una API pública.
