@@ -1,0 +1,128 @@
+@model UniversidadesVista
+@{
+    ViewData["Titulo"] = "Universidades";
+    ViewData["Icono"] = "graduation-cap";
+    ViewData["Activa"] = "universidades";
+    ViewData["Ancho"] = "universidades";
+}
+
+<ui-formulario accion="/universidades" metodo="get" progreso="Consultando…">
+    <div class="fila-buscar">
+        <ui-campo id="pais" etiqueta="País (en inglés)" valor="@Model.Pais" requerido="true"
+                  placeholder="Por ejemplo: Ecuador, Spain, Peru" autocomplete="off" />
+        <ui-boton icono="magnifying-glass">Buscar</ui-boton>
+    </div>
+</ui-formulario>
+
+@if (Model.ErrorBusqueda is not null)
+{
+    <div class="estado" data-estado><ui-mensaje tipo="error" mensaje="@Model.ErrorBusqueda" /></div>
+}
+
+@if (Model.Resultados is not null)
+{
+    @if (Model.Resultados.Count == 0)
+    {
+        <div class="estado" data-estado><ui-mensaje tipo="info" mensaje="No se encontraron universidades para ese país" /></div>
+    }
+    else
+    {
+        <section class="resultados capa" aria-label="Resultados de la búsqueda">
+            <div class="barra">
+                <span class="contador" aria-live="polite"><i class="ph ph-cloud-arrow-down"></i>@Model.Resultados.Count.ToString("N0") universidades encontradas</span>
+            </div>
+            <div class="tabla-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Nombre</th><th>Dominio</th><th>Sitio web</th><th>País</th><th class="acciones"></th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in Model.Resultados)
+                        {
+                            <tr>
+                                <td>@u.Nombre</td>
+                                <td><ui-dato valor="@u.Dominio" /></td>
+                                <td>
+                                    @if (Universidad.EsUrlWeb(u.SitioWeb))
+                                    {
+                                        <a href="@u.SitioWeb" target="_blank" rel="noopener noreferrer">@u.SitioWeb</a>
+                                    }
+                                    else
+                                    {
+                                        <ui-dato valor="@u.SitioWeb" />
+                                    }
+                                </td>
+                                <td>@u.Pais</td>
+                                <td class="acciones">
+                                    @if (Model.Claves.Contains(Universidad.Clave(u.Nombre, u.Pais)))
+                                    {
+                                        <span class="insignia-guardada"><i class="ph ph-check-circle"></i>Guardada</span>
+                                    }
+                                    else
+                                    {
+                                        <ui-formulario accion="/universidades/guardar" progreso="Guardando…" clase="form-linea">
+                                            <input type="hidden" name="nombre" value="@u.Nombre">
+                                            <input type="hidden" name="dominio" value="@u.Dominio">
+                                            <input type="hidden" name="sitioWeb" value="@u.SitioWeb">
+                                            <input type="hidden" name="pais" value="@u.Pais">
+                                            <input type="hidden" name="busqueda" value="@Model.Pais">
+                                            <ui-boton icono="floppy-disk">Guardar</ui-boton>
+                                        </ui-formulario>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    }
+}
+
+<h2 class="subtitulo">Universidades guardadas</h2>
+<div class="barra">
+    <span class="contador" aria-live="polite"><i class="ph ph-graduation-cap"></i>@Model.Guardadas.Count.ToString("N0") universidades</span>
+</div>
+<div class="tabla-wrap">
+    <table>
+        <thead>
+            <tr><th>Nombre</th><th>Dominio</th><th>Sitio web</th><th>País</th><th class="acciones">Acciones</th></tr>
+        </thead>
+        <tbody>
+            @if (Model.Guardadas.Count == 0)
+            {
+                <tr><td class="vacio" colspan="5">Aún no hay universidades; busque un país y guarde sus universidades.</td></tr>
+            }
+            else
+            {
+                @foreach (var u in Model.Guardadas)
+                {
+                    <tr>
+                        <td>@u.Nombre</td>
+                        <td><ui-dato valor="@u.Dominio" /></td>
+                        <td>
+                            @if (Universidad.EsUrlWeb(u.SitioWeb))
+                            {
+                                <a href="@u.SitioWeb" target="_blank" rel="noopener noreferrer">@u.SitioWeb</a>
+                            }
+                            else
+                            {
+                                <ui-dato valor="@u.SitioWeb" />
+                            }
+                        </td>
+                        <td>@u.Pais</td>
+                        <td class="acciones">
+                            <div class="acciones-fila">
+                                <ui-boton href="@("/universidades/" + u.Id)" solo-icono="true" titulo="Editar" icono="pencil-simple" />
+                                <ui-formulario accion="/universidades/eliminar" confirmar="¿Eliminar esta universidad?" progreso="Eliminando…" clase="form-linea">
+                                    <input type="hidden" name="id" value="@u.Id">
+                                    <ui-boton tipo="peligro" solo-icono="true" titulo="Eliminar" icono="trash" />
+                                </ui-formulario>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

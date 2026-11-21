@@ -184,3 +184,21 @@ a.boton:hover, a.nav-btn:hover { text-decoration: none; }
 .filtros .bloque { margin: 0; }
 body.ocupado a, body.ocupado .nav-btn { pointer-events: none; opacity: .6; }
 .subtitulo { margin: 32px 0 12px; font-size: 20px; font-weight: 700; }
+
+.pagina--universidades { max-width: 1248px; }
+.resultados { padding: 16px; margin: 24px 0; }
+.resultados .barra { margin-bottom: 12px; }
+.resultados .tabla-wrap { max-height: 40vh; }
+td .boton { min-height: 32px; padding: 4px 12px; font-size: 14px; }
+td .boton i { font-size: 18px; }
+.insignia-guardada { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--exito); }
+.acciones-fila { display: flex; gap: 8px; align-items: center; justify-content: flex-end; }
+th.acciones, td.acciones { text-align: right; width: 1%; }
+.boton--icono { width: 40px; min-height: 40px; height: 40px; padding: 0; background: var(--crema-papel); color: var(--terracota-oscuro);
+  border: 1px solid var(--crema-oscuro); }
+td .boton--icono { width: 36px; min-height: 36px; height: 36px; padding: 0; }
+.boton--icono:hover { background: var(--crema); color: var(--terracota-profundo); }
+.boton--icono::before { display: none; }
+.boton--icono i { font-size: 20px; }
+.boton--peligro { color: var(--vino); }
+.boton--peligro:hover { color: var(--vino-profundo); }

@@ -28,10 +28,21 @@ public class BotonTagHelper : TagHelper
 
     public bool Salida { get; set; }
 
+    public bool SoloIcono { get; set; }
+
+    public string? Titulo { get; set; }
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        var clases = "boton boton--" + (string.IsNullOrEmpty(Tipo) ? "primario" : Tipo)
-                     + (Completo ? " boton--completo" : "") + (Salida ? " salida" : "");
+        var clases = SoloIcono
+            ? "boton boton--icono" + (Tipo == "peligro" ? " boton--peligro" : "")
+            : "boton boton--" + (string.IsNullOrEmpty(Tipo) ? "primario" : Tipo)
+              + (Completo ? " boton--completo" : "") + (Salida ? " salida" : "");
+        if (SoloIcono && !string.IsNullOrEmpty(Titulo))
+        {
+            output.Attributes.SetAttribute("title", Titulo);
+            output.Attributes.SetAttribute("aria-label", Titulo);
+        }
         output.TagMode = TagMode.StartTagAndEndTag;
         output.Attributes.SetAttribute("class", clases);
         if (!string.IsNullOrEmpty(Href))

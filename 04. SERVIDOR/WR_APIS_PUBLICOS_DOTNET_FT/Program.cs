@@ -15,6 +15,11 @@ builder.Services.AddScoped<PaisRepositorio>();
 builder.Services.Configure<RestCountriesOpciones>(builder.Configuration.GetSection("RestCountries"));
 builder.Services.AddHttpClient<ConsumoApi>(cliente => cliente.Timeout = TimeSpan.FromSeconds(10));
 
+// API de universidades (Hipolabs, solo HTTP): cliente tipado con tiempo de espera de 10 s
+builder.Services.AddScoped<UniversidadRepositorio>();
+builder.Services.Configure<UniversidadesOpciones>(builder.Configuration.GetSection("Universidades"));
+builder.Services.AddHttpClient<ConsumoApiUniversidades>(cliente => cliente.Timeout = TimeSpan.FromSeconds(10));
+
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<RazorViewEngineOptions>(opciones =>
 {

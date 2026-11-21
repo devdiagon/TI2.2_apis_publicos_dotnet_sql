@@ -65,6 +65,41 @@ namespace WR_APIS_PUBLICOS_DOTNET_FT.Migrations
 
                     b.ToTable("Paises", (string)null);
                 });
+
+            modelBuilder.Entity("ec.edu.monster.modelo.Universidad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Dominio")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SitioWeb")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Nombre", "Pais")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Universidades_Nombre_Pais");
+
+                    b.ToTable("Universidades", (string)null);
+                });
 #pragma warning restore 612, 618
         }
     }

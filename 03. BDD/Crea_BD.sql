@@ -27,4 +27,17 @@ GO
 CREATE UNIQUE INDEX UX_Paises_Nombre ON Paises(Nombre);
 GO
 
+
+CREATE TABLE Universidades(
+    Id        INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre    NVARCHAR(200) NOT NULL,
+    Dominio   NVARCHAR(100) NULL,
+    SitioWeb  NVARCHAR(300) NULL,
+    Pais      NVARCHAR(100) NOT NULL
+);
+GO
+
+CREATE UNIQUE INDEX UX_Universidades_Nombre_Pais ON Universidades(Nombre, Pais);
+GO
+
 */

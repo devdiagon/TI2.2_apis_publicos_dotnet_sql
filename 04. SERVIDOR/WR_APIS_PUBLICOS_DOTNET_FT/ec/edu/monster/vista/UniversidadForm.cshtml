@@ -1,0 +1,19 @@
+@model FormularioUniversidad
+@{
+    ViewData["Titulo"] = "Editar universidad";
+    ViewData["Icono"] = "pencil-simple-line";
+    ViewData["Activa"] = "universidades";
+    ViewData["Ancho"] = "form";
+}
+
+<ui-formulario accion="/universidades/guardar" progreso="Guardando…">
+    <input type="hidden" name="id" value="@Model.Id">
+    <ui-campo id="nombre" etiqueta="Nombre" valor="@Model.Nombre" maxlength="200" />
+    <ui-campo id="dominio" etiqueta="Dominio" valor="@Model.Dominio" maxlength="100" placeholder="Por ejemplo: epn.edu.ec" />
+    <ui-campo id="sitioWeb" etiqueta="Sitio web" valor="@Model.SitioWeb" maxlength="300" inputmode="url" placeholder="http://www.ejemplo.edu.ec/" />
+    <ui-campo id="pais" etiqueta="País" valor="@Model.Pais" maxlength="100" />
+    <div class="fila-botones">
+        <ui-boton icono="floppy-disk">Guardar</ui-boton>
+        <ui-boton tipo="secundario" href="/universidades" icono="x">Cancelar</ui-boton>
+    </div>
+</ui-formulario>
